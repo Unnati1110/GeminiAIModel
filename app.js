@@ -18,6 +18,6 @@ app.post("/getResponse", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).json({ msg: "bad request" });
+      res.status(500).json({ error: err });
     });
 });
