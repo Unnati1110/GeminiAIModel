@@ -6,7 +6,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 app.use(bodyParser.json()); 
 
 app.post("/getResponse", (req, res) => {
-  const question = req.body.question; // ✅ extract question from body
+  const question = req.body.question; 
 
   if (!question) {
     return res.status(400).json({ error: "Question is required" });
