@@ -3,21 +3,25 @@ const app = express();
 const bodyParser = require("body-parser");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 
-app.post("/getResponse", (req, res) => {
-  console.log(req.body.question);
-  const genAI = new GoogleGenerativeAI('AIzaSyA7n5AQkuX0-47k7dhpr4UYhBbC-JQcH4Y');
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+app.post("/getResponse", async (req, res) => {
+  try {
+    const question = req.body.question;
+    console.log("Received question:", question);
 
-  model.generateContent(req.body.question)
-    .then((result) => {
-      console.log(result.response.text());
-      const responseText = result.response.text();
-      res.status(200).json({ response: responseText });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: err });
-    });
+    const genAI = new GoogleGenerativeAI("AIzaSyA7n5AQkuX0-47k7dhpr4UYhBbC-JQcH4Y");
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const result = await model.generateContent(question);
+    const responseText = result.response.text();
+
+    console.log("AI response:", responseText);
+    res.status(200).json({ response: responseText });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: error.message });
+  }
 });
+
+module.exports = app;
