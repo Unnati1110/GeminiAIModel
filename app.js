@@ -4,9 +4,11 @@ const bodyParser = require("body-parser");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 app.use(bodyParser.json());
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 })
+
 app.post("/getResponse", async (req, res) => {
   try {
     const question = req.body.question;
